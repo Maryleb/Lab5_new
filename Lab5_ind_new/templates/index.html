@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title> Complex numbers </title>
+</head>
+<body>
+<form action="{{ url_for('index') }}" method="get">
+    <p>Формат записи:<br>
+        <input type=radio name=format value=показательная {% if format == "показательная" %}checked{% endif %}> Показательная <br>
+        <input type=radio name=format value=тригонометрическая {% if format == "тригонометрическая" %}checked{% endif %}> Тригонометрическая
+    </p>
+    <p>Первое число:</p>
+    <p>
+        Модуль комплексного числа: <input type="text" name="first_module" value = {{first_module}} >
+        Угол phi: <input type="text" name="first_phi" value={{first_phi}}>
+    </p>
+    <p>Второе число:</p>
+    <p>
+        Модуль комплексного числа: <input type="text" name="second_module" value = {{second_module}}>
+        Угол phi: <input type="text" name="second_phi" value={{second_phi}}>
+    </p>
+    <p>
+        Возможные действия:<br>
+        {% for i in range(len(operations)) %}
+        <input type=checkbox name=operations value={{operations[i]}} {% if operations[i] in operation_selected %}checked{% endif %}>
+        {{operations[i]}}<br>
+        {% endfor %}
+    </p>
+    <p><input name="button" type=submit value=Отправить></p>
+</form>
+<form action="{{ url_for('index') }}" method="get">
+    <p><input type=submit value=Очистить></p>
+</form>
+
+{% if show_results  and first_module!=0 and second_module!=0%}
+    <p>
+    {% for operation in operation_selected %}
+        {{operation}} : {{do_operation[operation](first_module,first_phi,second_module,second_phi, format)}}<br>
+    {% endfor %}
+    </p>
+{% endif %}
+
+</body>
+</html>
